@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ApolloClient, gql, InMemoryCache } from '@apollo/client'
+import { ApolloClient, ApolloProvider, gql, InMemoryCache } from '@apollo/client'
 import App from './App'
 
 const client = new ApolloClient({
@@ -8,28 +8,12 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 })
 
-client.query({
-  query: gql`
-    query GetAllCharacters{
-      characters{
-  	    results{
-          id
-          name
-          image
-          status
-          species
-          location {
-            name
-          }
-  	    }
-	    }
-    }
-  `
-}).then(result => console.log(result))
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
